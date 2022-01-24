@@ -1,3 +1,5 @@
+Casptone project DriveRite Forked from Azure Repo.
+
 # Introduction 
 The Driver Incentive Program -- DriveRite (by DriveRite Technologies) is a Django-based web application designed to empower transportation companies to give points to their drivers, and 
 allow those drivers to pick rewards from a sponsor-curated set of online-shoppable items.
