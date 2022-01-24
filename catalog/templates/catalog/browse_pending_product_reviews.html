@@ -1,0 +1,30 @@
+{% extends "core/base.html" %}
+{% load static compress %}
+
+{% block css %}
+    {% compress css %}
+        <link rel="stylesheet" type="text/x-scss" href="{% static 'css/pages/order_summary.scss' %}" media="screen">
+    {% endcompress %}
+{% endblock %}
+
+{% block main_content %}
+
+<h2 style="text-align: center;">Pending Product Reviews</h2><hr><br><br>
+
+
+{% for review in review_list %}
+        <div style="text-align: center;">
+        <h2>Reviewer Name: {{ review.reviewer.first_name }} {{ review.reviewer.last_name }}</h2><br>
+        <h2>Review Title: {{ review.title }}</h2><br>
+        <h2>Review Body: {{ review.review }}</h2><br>
+
+        <form action="{% url 'catalog:approve_pending_product_reviews' review.catalog_item.api_item_Id review.reviewer.id %}" method="POST">
+            {% csrf_token %}
+            <input class="btn default" type="submit" name="approve" value="Approve"></a>
+            <input class="btn default" type="submit" name="reject" value="Reject"></a>
+        </form>
+        </div><br><br><br>
+{% endfor %}
+
+
+{% endblock %}

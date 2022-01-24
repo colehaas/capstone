@@ -1,0 +1,32 @@
+// _jumbotron.scss
+// This contains the default CSS for displaying a jumbotron.
+
+// Jumbotron
+@mixin generateJumbotron($text-color, $bg-color, $border-color) {
+    .jumbotron {
+        color: $text-color;
+        background-color: $bg-color;
+    }
+
+    .btn-jumbotron {
+        color: $border-color;
+        border-color: $border-color;
+    }
+
+    .btn-jumbotron:hover {
+        color: $text-color;
+        background-color: $border-color;
+        border-color: $border-color;
+    }
+
+    .btn-jumbotron-alt {
+        color: $white;
+        background: $border-color;
+    }
+
+    .btn-jumbotron-alt:hover {
+        color: $border-color;
+        border-color: $border-color;
+        background: $purple;
+    }
+}

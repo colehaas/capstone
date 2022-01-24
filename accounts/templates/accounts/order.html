@@ -1,0 +1,46 @@
+{% extends "core/base.html" %}
+{% load static compress %}
+
+{% block css %}
+    {% compress css %}
+        <link rel="stylesheet" type="text/x-scss" href="{% static 'css/pages/signin.scss' %}" media="screen">
+        <link rel="stylesheet" type="text/x-scss" href="{% static 'css/pages/order_summary.scss' %}" media="screen">
+    {% endcompress %}
+{% endblock %}
+
+{% block main_content %}
+        <div class="page-section-heading my-3" style="padding-left: 50px;">
+            <h1>Order Report</h1>
+            <h5>Order Number: #{{ order.id }}</h5>
+            <h5>Order Status: {{ order.order_status }}</h5>
+            <h5>Last Updated: {{ order.last_status_change | date:"F j, Y" }}</h5>
+            <h5>Order Cost: {{ order.retail_at_order }} USD ({{ order.points_at_order }} Points)</h5>
+            <br>
+            <h5>Driver: {{ order.ordering_driver }}</h5>
+            <h5>Sponsor Company: {{ order.sponsor }}</h5>
+
+        </div>
+        <div class="container">
+
+        <table class="order_table">
+    {% if order.sponsor_catalog_item %}
+        <h5>  </h5>
+        <tr>
+        <!-- <th id="rows">No.</th> -->
+        <th id="rows">Item</th>
+        <th id="rows">Name</th>
+        <th id="rows">Cost Points</th>
+        <th id="rows">Cost USD</th>
+        </tr>
+
+            <tr>
+            <th id="rows">1</th>
+            <th id="rows">{{ order.sponsor_catalog_item.catalog_item.item_name }}</th>
+            <th id="rows">{{ order.points_at_order }}</th>
+            <th id="rows">{{ order.retail_at_order }}</th>
+
+            </tr>
+    {% endif %}
+    </table>
+        </div>
+{% endblock %}

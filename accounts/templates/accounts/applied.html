@@ -1,0 +1,19 @@
+{% extends "core/base.html" %}
+{% load static compress %}
+
+{% block css %}
+    {% compress css %}
+        <link rel="stylesheet" type="text/x-scss" href="{% static 'css/pages/signin.scss' %}" media="screen">
+    {% endcompress %}
+{% endblock %}
+
+{% block main_content %}
+    <div class="container">
+        <div class="card w-50 mt-3 mx-auto shadow-lg rounded text-center">
+            <div class="card-body">
+                <h2 class="card-title mb-3">Congratulations</h2>
+                <h5>You have submitted your application. You will recieve an email when you are accepted.</h5>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,147 @@
+// _base.scss
+// This file is the base component that includes the basic CSS styles for
+// html, body, page-header and page-footer. All other SCSS/SASS files should
+// extend this file to include their own styles for the various components
+// used in their respective pages.
+@import "../utils/_variables";
+
+/* General CSS */
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    font-family: $body-font;
+}
+
+/* Header-Related CSS */
+#page-header {
+    position: sticky;
+    top: 0;
+    z-index: 1071;
+    min-height: $page-header-min-height;
+    background-color: $page-header-bg-color;
+
+    // Navbar Link
+    .nav-link {
+        font-size: 1rem;
+        color: $page-header-navlink-color;
+    }
+
+    .nav-link:hover {
+        color: $page-header-navlink-hover-color;
+    }
+
+    .nav-view-button {
+        font-size: 1rem;
+        color: $page-header-navlink-color;
+        border-color: $page-content-bg-color-light;
+    }
+
+    // Navbar Brand
+    .navbar-brand {
+        color: $page-header-navbrand-color;
+    }
+
+    .navbar-brand:hover {
+        color: $page-header-navlink-hover-color;
+    }
+
+    // Navbar Dropdown Menu and Links
+    .dropdown-menu {
+        min-width: 0;
+    }
+
+    .dropdown-item {
+        color: $page-header-dropdownlink-color;
+    }
+
+    .dropdown-item:hover {
+        color: $page-header-dropdownlink-hover-color;
+        background-color: $page-header-dropdownlink-bg-color;
+        opacity: 0.15;
+    }
+
+    // Navbar Login Button
+    .btn-auth {
+        color: $page-header-navlink-color;
+        border-color: $page-header-navlink-color;
+    }
+
+    .btn-auth:hover {
+        color: $page-header-navlink-hover-color;
+        background-color: $page-header-navlink-color;
+        border-color: $page-header-navlink-color;
+    }
+}
+
+#site-title {
+    font-family: $page-header-site-title-font;
+    font-size: 1.75rem;
+    font-weight: 200 !important;
+}
+
+#shopping-cart{
+    size: 1000px;
+    color: $page-header-navlink-color;
+    padding-top: 7px;
+    padding-right: 5px;
+}
+
+#cart-count {
+    font-size: 10px;
+    background: grey;
+    color: #fff;
+    padding: 0 5px;
+    vertical-align: top;
+    margin-left: -10px; 
+}
+
+#no-items {
+padding-left: 50px;
+font-family: $body-font;
+font: bolder;
+font-size: 50px;
+}
+
+#top {
+    position: fixed;
+    left: 30px;
+    bottom: 40px;
+    z-index: 99;
+    padding: 15px;
+    font-size: 18px;
+    color: $purple;
+    cursor: pointer;
+    background-color: $gunmetal;
+    border: none;
+    border-radius: 4px;
+    outline: none;
+    }
+
+    #top:hover {
+        background-color: $purple;
+        color: $gunmetal;
+    }
+
+#second {
+    position: fixed;
+    left: 30px;
+    bottom: 100px;
+    z-index: 99;
+    padding: 15px;
+    font-size: 18px;
+    color: $purple;
+    cursor: pointer;
+    background-color: $gunmetal;
+    border: none;
+    border-radius: 4px;
+    outline: none;
+    }
+
+    #second:hover {
+        background-color: $purple;
+        color: $gunmetal;
+    }
+

@@ -1,0 +1,49 @@
+{% extends "core/base.html" %}
+{% load static compress crispy_forms_tags crispy_forms_filters %}
+
+{% block css %}
+    {% compress css %}
+        <link rel="stylesheet" type="text/x-scss" href="{% static 'css/pages/register.scss' %}" media="screen">
+    {% endcompress %}
+{% endblock %}
+
+{% block main_content %}
+    <div class="jumbotron jumbotron-fluid py-5 mb-0">
+        <div class="container text-center">
+            <h1>*Sponsor Company* Announcements</h1>
+        </div>
+    </div>
+    <div class="container px-3 py-0">
+        <form action="{% url 'accounts:register' %}" method="POST">
+            {% csrf_token %}
+            <div class="page-section-heading my-3">
+               <h3>Announcements </h3> 
+            </div>
+
+            
+
+            <div class="my-4">
+                
+                
+
+               
+                
+                <div id="edit" contenteditable="true"> <!-- Remove this part for Drivers -->
+                    
+                    Enter an announcement here
+                    
+                </div>
+
+                <br>
+
+                <input type="button" value="Post" onclick="saveEdits()"/>   <!-- Remove this button for Drivers -->
+                
+
+            </div>
+            <div class="d-flex p-0 justify-content-center">
+                
+            </div>
+        </form>
+        <br>
+    </div>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends "core/base.html" %}
+{% load static compress %}
+
+{% block css %}
+    {% compress css %}
+        <link rel="stylesheet" type="text/x-scss" href="{% static 'css/pages/catalog.scss' %}" media="screen">
+    {% endcompress %}
+{% endblock %}
+
+{% block main_content %}
+
+
+<div class="container-fluid pt-5 head">
+    <h2 style="text-align:center">{{ user.userinformation.sponsor_company }} Catalog</h2>
+    {% if last_update %}
+        <p style="text-align:center"> Catalog Last Updated: {{last_update|date:'F j, Y g:i A'}} </p>
+    {% endif %}
+</div>
+
+
+<div class = "container-fluid">
+    <div class="row">
+
+        <nav class="container-fluid col-2 sidebar">
+            <div class = "sticky-top pt-5" id="sidebar"></div>
+        </nav>
+
+        <div class="container-fluid col-10">
+
+            <nav class="navbar navbar-expand-sm bg-light">
+                <form class="form-inline my-2 my-lg-0 mx-auto">
+                    <input class= "form-control mr-sm-2" type="search" id="searchbar" placeholder="Search" aria-label="Search"></input>
+                    <button class="btn btn-primary my-2 my-sm-0" type="button" id="search">Search</button>
+                    <button class="btn btn-primary ml-1 my-2 my-sm-0" type="button" id="clearsearch">Clear</button>
+                </form>
+            </nav>
+            
+            <div class = "sticky-top">
+                <div class="container-fluid bg-light">
+                    <div class="row justify-content-center">
+                </div>
+            </div>
+            <div class="row justify-content-center" id="item"></div>
+        </div>
+    </div>
+</div>
+
+{% load static %}
+<script src="{% static 'catalog/sponsor_items.js' %}"></script>
+
+{% endblock %}

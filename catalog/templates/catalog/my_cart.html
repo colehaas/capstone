@@ -1,0 +1,72 @@
+{% extends "core/base.html" %}
+{% load static compress %}
+
+{% block css %}
+    {% compress css %}
+        <link rel="stylesheet" type="text/x-scss" href="{% static 'css/pages/order_summary.scss' %}" media="screen">
+    {% endcompress %}
+{% endblock %}
+
+{% block main_content %}
+    <!-- List of Items in cart -->
+    <table class="order_table">
+    {% if item_list %}
+        <h5>  </h5>
+        <tr>
+        <!-- <th id="rows">No.</th> -->
+        <th id="rows">Item</th>
+        <th id="rows">Name</th>
+        <th id="rows">Cost</th>
+        <th id="rows"></th>
+        <th id="rows">QTY</th>
+        <th id="rows"></th>
+        </tr>
+
+        {% for items, images in item_list %}
+            <tr>
+            <!-- <th id="rows">{{ forloop.counter }}</th> -->
+            <td><img id="itemPic" src="{{ images.image_link }}" width="auto" height="auto"/></td>
+            <td id="rows"> <a href="{% url 'catalog:product_page' items.catalog_item.api_item_Id %}">{{ items.catalog_item.item_name }}</a></td>
+            <td id="rows"> $ {{ items.catalog_item.retail_price }}</td>
+            <td id="rows"><a id="remove" href="{% url 'catalog:remove_item_from_cart' items.catalog_item.api_item_Id %}">-</a></td> 
+            <td id="rows">{{ items.qty_in_cart }} </td> 
+            <td id="rows"><a id="add" href="{% url 'catalog:add_item_from_cart_page' items.catalog_item.api_item_Id %}">+</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+
+
+<!-- Order Summary Section -->
+    <table id = "totals">
+        <h3> </h3>
+        <h3> </h3>
+        <h3> <th> <u>Order Totals</u></th></h3>
+        <tr><th>Total Retail Cost :     </th>
+        <th> $ {{ totals_dic.retail }}</th></tr>
+        <tr><th>Total Point Cost :      </th>
+        <th>  {{ totals_dic.points }}</th></tr>
+
+  
+    </table>
+
+        {% if user.userinformation.points > totals_dic.points %}
+        <div class="d-flex py-2">
+            {% csrf_token %}
+            <a class="btn default" href="{% url 'catalog:checkout' %}" id = "checkout">Checkout</a>
+        </div>
+        {% else %}
+        <div style="text-align: center;">
+        <h3> <u>Not enough points to place this order!!</u></Order></h3>
+        </div>
+        {% endif %}
+
+    {% else %}
+    <!-- Empty Cart -->
+    <div id="no_items">No items in your cart</div>
+    {% endif %}
+
+
+    {% load static %}
+    <!-- <script src="{% static 'catalog/sponsor_items.js' %}"></script>  -->
+
+    {% endblock %}

@@ -1,0 +1,40 @@
+{% extends "core/base.html" %}
+{% load static compress crispy_forms_tags crispy_forms_filters %}
+
+{% block css %}
+    {% compress css %}
+        <link rel="stylesheet" type="text/x-scss" href="{% static 'css/pages/register.scss' %}" media="screen">
+    {% endcompress %}
+{% endblock %}
+
+{% block main_content %}
+    <div class="jumbotron jumbotron-fluid py-5 mb-0">
+        <div class="container text-center">
+            <h1>DriveRite Application</h1>
+        </div>
+    </div>
+    <div class="container px-3 py-0">
+        <form action="{% url 'accounts:register' %}" method="POST">
+            {% csrf_token %}
+            <div class="page-section-heading my-3">
+                <h3>Basic Information</h3>
+            </div>
+            <div class="error">{{ error }}</div>
+            <div class="my-4">
+                {{ form.user_email|as_crispy_field }}
+                {{ form.first_name|as_crispy_field }}
+                {{ form.last_name|as_crispy_field }}
+                {{ form.phone_number|as_crispy_field }}
+                {{ form.sponsor_company|as_crispy_field }}
+                {{ form.license_number|as_crispy_field }}
+                {{ form.state|as_crispy_field }}
+                {{ form.address|as_crispy_field }}
+            </div>
+            <div class="d-flex p-0 justify-content-center">
+                <button type="submit" class="btn btn-success" aria-expanded="true">Confirm</button>
+                <a href="{% url 'accounts:profile' %}" class="btn btn-danger ml-2" role="button" aria-pressed="true">Cancel</a>
+            </div>
+        </form>
+        <br>
+    </div>
+{% endblock %}

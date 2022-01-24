@@ -1,0 +1,19 @@
+{% extends "core/base.html" %}
+{% load static compress %}
+
+{% block css %}
+    {% compress css %}
+        <link rel="stylesheet" type="text/x-scss" href="{% static 'css/pages/disable_account.scss' %}" media="screen">
+    {% endcompress %}
+{% endblock %}
+
+{% block main_content %}
+<h2 id=Title>Are you sure you want to disable your account?</h2>
+<form action="{% url 'accounts:disable_account' %}" method="POST" class="padding">{% csrf_token %}
+    <button id="Disable" class="btn btn-primary" type="submit" name="Disable">Disable</button>
+    <div id=Divider>
+    <button id="Back" class="btn btn-success" type="submit" name="Back">Back</button>
+</div>
+</form>
+
+{% endblock %}

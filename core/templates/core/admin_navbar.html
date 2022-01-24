@@ -1,0 +1,60 @@
+<body>
+    <!-- Collapse -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsingNavbar">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="navbar-collapse collapse" id="collapsingNavbar">
+        
+        <!-- Links -->
+        <ul class="navbar-nav ml-auto">
+
+            <!-- Dropdown -->
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                Reports
+                </a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="{% url 'accounts:driver_sales' %}">Driver Sales</a>
+                    <a class="dropdown-item" href="{% url 'accounts:sales_reports' %}">Sponsor Sales</a>
+                    <a class="dropdown-item" href="{% url 'accounts:all_invoices' %}">Invoices</a>
+                </div>
+            </li>
+
+            <!-- Dropdown -->
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                Audit Logs
+                </a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="{% url 'accounts:application_logs' %}">Driver Applications</a>
+                    <a class="dropdown-item" href="{% url 'accounts:point_change_logs' %}">Point Changes</a>
+                    <a class="dropdown-item" href="{% url 'accounts:login_logs' %}">Login Attempts</a>
+                </div>
+            </li>
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                Manage
+                </a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="{% url 'accounts:user_management' %}">Manage Users</a>
+                    <a class="dropdown-item" href="{% url 'accounts:company_management' %}">Manage Companies</a>
+                </div>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'accounts:review_apps' %}">Applications</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'accounts:profile' %}">Profile</a>
+            </li>
+            <li class="nav-item">
+                {% if user.is_authenticated %}
+                    <a class="nav-link" href="{% url 'accounts:logout' %}">Logout</a>
+                {% else %}
+                    <a class="nav-link" href="{% url 'accounts:login' %}">Login</a>
+                {% endif %}
+            </li>
+        </ul>
+    </div>
+</body>

@@ -1,0 +1,26 @@
+{% extends "core/base.html" %}
+{% load static compress %}
+
+{% block css %}
+    {% compress css %}
+        <link rel="stylesheet" type="text/x-scss" href="{% static 'css/pages/catalog.scss' %}" media="screen">
+    {% endcompress %}
+{% endblock %}
+
+{% block main_content %}
+
+<h3 class = "m-5" style = "text-align: center;">Order History</h3>
+
+{% for orders, sponsors, items, images in data %}
+
+<div class = "order container p-5">
+    
+    <h5>{{items.item_name}}</h5>
+    <img class="m-2 mx-auto img-thumbnail" src="{{ images.image_link }}" width="auto" height="auto" />
+    <p>Ordered on: {{orders.last_status_change}}<p>
+    <div>Status: {{orders.order_status}} </div>
+    <div>Points: {{orders.points_at_order}}</div>
+
+</div>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,196 @@
+{% extends "core/base.html" %}
+{% load static compress crispy_forms_tags crispy_forms_filters %}
+
+{% block css %}
+    {% compress css %}
+        <link rel="stylesheet" type="text/x-scss" href="{% static 'css/pages/disable_account.scss' %}" media="screen">
+    {% endcompress %}
+{% endblock %}
+
+{% block main_content %}
+    {% if current_user.role_name != 'driver' %}
+    <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.24/b-1.7.0/b-colvis-1.7.0/b-html5-1.7.0/b-print-1.7.0/cr-1.5.3/date-1.0.2/sc-2.0.3/sl-1.3.2/datatables.min.css"/>
+    <br>
+
+    {% if current_user.role_name == 'admin'%}
+        <h3 class='text-center mb-3'>  All DriveRite Users </h3>
+    {% else %}
+        <h3 class='text-center mb-3'>  All {{current_user.sponsor_company.company_name}} Users </h3>
+    {% endif %}
+    
+    <div class="accordion" id="userManagementAccordion">
+        {% if current_user.role_name == 'admin'%}
+        <div class="card">
+            <div class="card-header" id="headingOne">
+                <h2 class="mb-0">
+                    <button class="btn btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        <strong>Admin Users ▼</strong>
+                    </button>
+                </h2>
+            </div>
+
+            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#userManagementAccordion">
+                <div class="card-body">
+                    <div class="panel" style="display: block">
+                        <div class="container">
+                            <br>
+                            <a class="btn btn-success" href="{% url 'accounts:create_user' value='admin'%}">+ Add New Admin</a>
+                            <div class="card mt-3 mx-auto shadow-lg rounded text-center">
+                                <table id="adminTable" class="table table-striped table-bordered table-hover">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th>Edit User</th>
+                                            <th>First Name</th>
+                                            <th>Last Name</th>
+                                            <th>Email</th>
+                                            <th>Phone Number</th>
+                                            <th>Last Login</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {%for admin in admins%}
+                                        <tr>
+                                            <td><a class="btn btn-primary" href="{% url 'accounts:edit_user' role='admin' value=admin.id%}">Edit</a></td>
+                                            <td>{{admin.first_name | safe}}</td>
+                                            <td>{{admin.last_name | safe}}</td>
+                                            <td>{{admin.user.email | safe}}</td>
+                                            <td>{{admin.phone_number | safe}}</td>
+                                            <td>{{admin.last_login | safe}}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <br>
+                        </div>
+                </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        <div class="card">
+            <div class="card-header" id="headingTwo">
+                <h2 class="mb-0">
+                    <button class="btn btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        <strong>Sponsor Users ▼</strong>
+                    </button>
+                </h2>
+            </div>
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#userManagementAccordion">
+                <div class="card-body">
+                    <div class="panel" style="display: block">
+                        <div class="container">
+                            <br>
+                            <a class="btn btn-success" href="{% url 'accounts:create_user' value='sponsor'%}">+ Add New Sponsor</a>
+                            <div class="card mt-3 mx-auto shadow-lg rounded text-center">
+                                <table id="sponsorTable" class="table table-striped table-bordered table-hover">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th>Company Name</th>
+                                            <th>Edit User</th>
+                                            <th>First Name</th>
+                                            <th>Last Name</th>
+                                            <th>Email</th>
+                                            <th>Phone Number</th>
+                                            <th>Last Login</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {%for sponsor in sponsors%}
+                                        <tr>
+                                            <td>{{sponsor.sponsor_company.company_name | safe}}</td>
+                                            <td><a class="btn btn-primary" href="{% url 'accounts:edit_user' role='sponsor' value=sponsor.id%}">Edit</a></td>
+                                            <td>{{sponsor.first_name | safe}}</td>
+                                            <td>{{sponsor.last_name | safe}}</td>
+                                            <td>{{sponsor.user.email | safe}}</td>
+                                            <td>{{sponsor.phone_number | safe}}</td>
+                                            <td>{{sponsor.last_login | safe}}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header" id="headingThree">
+            <h2 class="mb-0">
+                <button class="btn btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    <strong>Driver Users ▼</strong>
+                </button>
+            </h2>
+            </div>
+            <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#userManagementAccordion">
+                <div class="card-body">
+                    <div class="panel" style="display: block">
+                        <div class="container">
+                        <br>
+                                <a class="btn btn-success" href="{% url 'accounts:create_user' value='driver'%}">+ Add New Driver</a>
+                                <div class="card mt-3 mx-auto shadow-lg rounded text-center">
+                                    <table id="driverTable" class="table table-striped table-bordered table-hover">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th>Company Name</th>
+                                                <th>Edit User</th>
+                                                <th>Full Name</th>
+                                                <th>Driver Points</th>
+                                                <th>Email</th>
+                                                <th>Phone Number</th>
+                                                <th>Last Login</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {%for info in drivers%}
+                                            <tr>
+                                                <td>{{info.sponsor.company_name | safe}}</td>
+                                                <td><a class="btn btn-primary" href="{% url 'accounts:edit_user' role='driver' value=info.id%}">Edit</a></td>
+                                                <td>{{info.user.first_name | safe}} {{info.user.last_name | safe}}</td>
+                                                <td>
+                                                    {% if info.user.role_name == 'driver' %} 
+                                                        {{info.points | safe}}
+                                                        <a class="btn btn-primary text-white" href="{% url 'accounts:edit_points' value=info.id%}">Alter</a>
+                                                    {% else %}
+                                                        <b>N/A</b>
+                                                    {% endif %}
+                                                </td>
+                                                <td>{{info.user.user.email | safe}}</td>
+                                                <td>{{info.user.phone_number | safe}}</td>
+                                                <td>{{info.user.last_login | safe}}</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <br>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+<script hidden>
+        var acc = document.getElementsByClassName("accordion");
+        var i;
+
+        for (i = 0; i < acc.length; i++) {
+            acc[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var panel = this.nextElementSibling;
+                if (panel.style.display === "block") {
+                    panel.style.display = "none";
+                }
+                else {
+                    panel.style.display = "block";
+                }
+            });
+        }
+</script>
+{% endblock %}

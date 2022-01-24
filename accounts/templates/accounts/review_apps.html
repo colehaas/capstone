@@ -1,0 +1,123 @@
+{% extends "core/base.html" %}
+{% load static compress %}
+
+{% block css %}
+    {% compress css %}
+        <link rel="stylesheet" type="text/x-scss" href="{% static 'css/pages/signin.scss' %}" media="screen">
+    {% endcompress %}
+{% endblock %}
+
+{% block main_content %}
+
+    {% if user.userinformation.role_name == 'admin' %}
+        <div class="page-section-heading my-3" style="padding-left: 50px;">
+            <h1>Applications By Company</h1>
+        </div>
+        <div class="container">
+            {% for sponsor in sponsors %}
+
+                <button class=" accordion" style="width: 100%">{{sponsor}}</button>
+                <div class="panel" style="display: none">
+                    {% for obj in open_apps %}
+                    {% if sponsor == obj.sponsor_company %}
+                        <div class="card w-50 mt-3 mx-auto shadow-lg rounded text-center">
+                            <div class="card-body">
+                                <p class="card-text" style="float: left"> <b>Name:</b></p><p class="card-text" style="float: right"> {{ obj.driver.first_name | safe }} {{ obj.driver.last_name | safe }} </p>
+                                <br><br>
+                                <p class="card-text" style="float: left"> <b>Phone Number:</b></p><p class="card-text" style="float: right"> {{ obj.driver.phone_number | safe }} </p>
+                                <br><br>
+                                <p class="card-text" style="float: left"> <b>Email:</b></p><p class="card-text" style="float: right"> {{ obj.driver.user.email | safe }} </p>
+                                <br><br>
+                                <p class="card-text" style="float: left"> <b>Application Date:</b></p><p class="card-text" style="float: right"> {{ obj.driver.last_login | date:"F j, Y" }} </p>
+                                <br><br>
+                                <p class="card-text" style="float: left"> <b>Address:</b></p><p class="card-text" style="float: right"> {{ obj.driver.address | safe }} </p>
+                                <br><br>
+                                <p class="card-text" style="float: left"> <b>State:</b></p><p class="card-text" style="float: right"> {{ obj.driver.state | safe}} </p>
+                                <br><br>
+                                <p class="card-text" style="float: left"> <b>License Number:</b></p><p class="card-text" style="float: right"> {{ obj.driver.license_number | safe }} </p>
+                                <br><br>
+                                <form action="{% url 'accounts:review_apps' %}" method="POST">
+                                    {% csrf_token %}
+                                    <div class="container">
+                                        <input type="text" name="reason" value="Explain Reason Here" />
+                                        <br><br>
+                                    <div class="row">
+                                        <div class="col text-center">
+                                            <input type="hidden" name="user" value="{{ obj.driver.user.email }}"/>
+                                            <input type="hidden" name="sponsor" value="{{ sponsor }}"/>
+                                            <input class="btn btn-danger" style="width: 40%;" type="submit" name="reject" value="Reject" />
+                                            <input class="btn btn-success" style="width: 40%;" type="submit" name="approve" value="Approve" />
+                                        </div>
+                                    </div>
+                                </div>
+                                </form>
+                            </div>
+                        </div>
+                        <br>
+                    {% endif %}
+
+                {% endfor %}
+                </div>
+
+            {% endfor %}
+        </div>
+
+    {% elif user.userinformation.role_name == 'sponsor' %}
+        <div class="container">
+            {% for obj in open_apps %}
+                <div class="card w-50 mt-3 mx-auto shadow-lg rounded text-center">
+                    <div class="card-body">
+                        <p class="card-text" style="float: left"> <b>Name:</b></p><p class="card-text" style="float: right"> {{ obj.driver.first_name | safe }} {{ obj.driver.last_name | safe }} </p>
+                        <br><br>
+                        <p class="card-text" style="float: left"> <b>Phone Number:</b></p><p class="card-text" style="float: right"> {{ obj.driver.phone_number | safe }} </p>
+                        <br><br>
+                        <p class="card-text" style="float: left"> <b>Email:</b></p><p class="card-text" style="float: right"> {{ obj.driver.user.email | safe }} </p>
+                        <br><br>
+                        <p class="card-text" style="float: left"> <b>Application Date:</b></p><p class="card-text" style="float: right"> {{ obj.driver.last_login | date:"F j, Y" }} </p>
+                        <br><br>
+                        <p class="card-text" style="float: left"> <b>Address:</b></p><p class="card-text" style="float: right"> {{ obj.driver.address | safe }} </p>
+                        <br><br>
+                        <p class="card-text" style="float: left"> <b>State:</b></p><p class="card-text" style="float: right"> {{ obj.driver.state | safe}} </p>
+                        <br><br>
+                        <p class="card-text" style="float: left"> <b>License Number:</b></p><p class="card-text" style="float: right"> {{ obj.driver.license_number | safe }} </p>
+                        <br><br>
+                        <form action="{% url 'accounts:review_apps' %}" method="POST">
+                            {% csrf_token %}
+                            <div class="container">
+                                <input type="text" name="reason" value="Explain Reason Here" class="text-box"/>
+                                <br><br>
+                            <div class="row">
+                                <div class="col text-center">
+                                    <input type="hidden" name="user" value="{{ obj.driver.user.email }}"/>
+                                    <input type="hidden" name="sponsor" value="{{ obj.sponsor_company }}"/>
+                                    <input class="btn btn-danger" type="submit" name="reject" value="Reject" />
+                                    <input class="btn btn-success" type="submit" name="approve" value="Approve" />
+                                </div>
+                            </div>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+
+<script>
+    var acc = document.getElementsByClassName("accordion");
+    var i;
+
+    for (i = 0; i < acc.length; i++) {
+        acc[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var panel = this.nextElementSibling;
+            if (panel.style.display === "block") {
+                panel.style.display = "none";
+            }
+            else {
+                panel.style.display = "block";
+            }
+        });
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,43 @@
+// profile.scss
+// This file extends _base to generate all the CSS required to render the profile page
+@import "../base/base";
+@import "../components/_jumbotron.scss";
+@import "../utils/variables";
+
+/* Main Layout-Related CSS */
+#page-content {
+    min-height: calc(100vh - #{$page-header-min-height});
+    color: $page-content-border-color-3;
+
+    // Links
+    a {
+        text-decoration: none;
+    }
+
+    // Use the jumbotron mixin to generate the necessary CSS code
+    @include generateJumbotron($page-content-text-color-light, $page-content-border-color-dark, $page-content-border-color-3);
+}
+
+#Title {
+    position: center;
+    color: $page-content-border-color-3;
+    padding-top: 20px;
+    margin-left: 20px;
+    padding-bottom: 20px;
+}
+
+#Disable {
+    background-color: red;
+    margin-left: 20px;
+    padding-left: 20px;
+}
+
+#Back {
+    background-color: green;
+}
+
+#Divider {
+    padding-left: 40px;
+    height:auto;
+    display:inline-block;
+}

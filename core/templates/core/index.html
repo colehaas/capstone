@@ -1,0 +1,23 @@
+{% extends "core/base.html" %}
+{% load static compress %}
+
+{% block css %}
+    {% compress css %}
+        <link rel="stylesheet" type="text/x-scss" href="{% static 'css/pages/index.scss' %}" media="screen">
+    {% endcompress %}
+{% endblock %}
+
+{% block body_js %}
+{% endblock %}
+
+{% block main_content %}
+    <!--- Jumbotron -->
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <h1>Hello, {{ user.username }}</h1>
+            <a class="btn btn-lg btn-jumbotron" href="{% url 'accounts:profile'%}" role="button"
+               aria-pressed="true">Get Started</a>
+
+        </div>
+    </div>
+{% endblock %}

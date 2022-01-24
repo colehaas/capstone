@@ -1,0 +1,185 @@
+{% extends "core/base.html" %}
+{% load static compress %}
+
+{% block css %}
+    {% compress css %}
+        <link rel="stylesheet" type="text/x-scss" href="{% static 'css/pages/signin.scss' %}" media="screen">
+    {% endcompress %}
+{% endblock %}
+
+{% block main_content %}
+
+
+    {% if user.userinformation.role_name == 'admin' %}
+        <div class="page-section-heading my-3" style="padding-left: 50px;">
+            <h1>Sponsor Sales Reports</h1>
+            <h5>Total Dollars Sold: {{ total_dollars }} USD</h5>
+            <h5>Total Order Quantity: {{ total_sales }}</h5>
+        </div>
+
+        <!-- Date Range Selector -->
+        <div class = "container m-5" >
+            <form class="form" action="" method = "POST">
+                {% csrf_token %} 
+                <div class = "row" style = "justify-content: center;">
+                    <input type="date" value={{start}} name = "start">
+                    <input type="button" class = "btn btn-filter ml-1" value = "to" disabled></input>
+                    <input type="date" value={{end}} name = "end" class = "ml-1">
+                    <input type="submit" class = "btn btn-filter ml-1" value = "Filter"></input>
+                </div>
+            </form>
+        </div>
+
+
+        <div class="row">
+            <div class="container col-2">
+                <div class ="card ml-2 mt-2">
+                    <div class="card-body">
+                        <h5 class="card-title font-weight-bold">Sort By:</h5>
+                        <button class="btn sponsor m-2 spButton active" id="1">Sponsor</button>
+                        <button class="btn newest m-2 nButton" id="2">Most Recent</button>
+                        <button class="btn oldest m-2 oButton" id="3">Least Recent</button>
+                    </div>
+                </div>
+            </div>
+            <div class="container col-9">
+                <div class="row" id="sponsor" style="display: block;">
+                    {% for obj in sales_per %}
+
+                        <button class=" accordion" style="width: 100%">{{obj.0}} <div class="float-right">Total Order Quantity: {{ obj.1 }} &emsp; Total Dollars Sold: {{ obj.2 }} USD</div></button>
+                        <div class="panel" style="display: none">
+                            {% for order in sales %}
+                            {% if obj.0 == order.sponsor %}
+                                <div class="card mt-3 mx-auto shadow-lg rounded text-center " style="width: 75vw;">
+                                    <div class="card-body">
+                                        <p class="card-text" style="float: left"> <b>Order Id:</b></p><p class="card-text" style="float: right"> {{ order.id | safe }} </p>
+                                        <br><br>
+                                        <p class="card-text" style="float: left"> <b>Name:</b></p><p class="card-text" style="float: right"> {{ order.ordering_driver | safe }} </p>
+                                        <br><br>
+                                        <p class="card-text" style="float: left"> <b>Status:</b></p><p class="card-text" style="float: right"> {{ order.order_status | safe }} </p>
+                                        <br><br>
+                                        <p class="card-text" style="float: left"> <b>Cost:</b></p><p class="card-text" style="float: right"> {{ order.retail_at_order | safe }} USD ({{ order.points_at_order | safe }} Points) </p>
+                                        <br><br>
+                                        <p class="card-text" style="float: left"> <b>Last Updated:</b></p><p class="card-text" style="float: right"> {{ order.last_status_change | date:"F j, Y" }} </p>
+                                        <br><br>
+                                        <a class="btn btn-success" href="{% url 'accounts:order' order.id %}">View Order</a>
+                                    </div>
+                                </div>
+                                <br>
+                            {% endif %}
+
+                        {% endfor %}
+                        </div>
+
+                    {% endfor %}
+                </div>
+
+            <div class="container" id="newest" style="display: none;">
+                    {% for obj in newest_first %}
+                                <div class="card mt-3 mx-auto shadow-lg rounded text-center"style="width: 50vw;">
+                                    <div class="card-body">
+                                        <p class="card-text" style="float: left"> <b>Order Id:</b></p><p class="card-text" style="float: right"> {{ obj.id | safe }} </p>
+                                        <br><br>
+                                        <p class="card-text" style="float: left"> <b>Name:</b></p><p class="card-text" style="float: right"> {{ obj.ordering_driver | safe }} </p>
+                                        <br><br>
+                                        <p class="card-text" style="float: left"> <b>Status:</b></p><p class="card-text" style="float: right"> {{ obj.order_status | safe }} </p>
+                                        <br><br>
+                                        <p class="card-text" style="float: left"> <b>Cost:</b></p><p class="card-text" style="float: right"> {{ obj.retail_at_order | safe }} USD ({{ obj.points_at_order | safe }} Points) </p>
+                                        <br><br>
+                                        <p class="card-text" style="float: left"> <b>Last Updated:</b></p><p class="card-text" style="float: right"> {{ obj.last_status_change | date:"F j, Y" }} </p>
+
+                                        <a class="btn btn-success" href="{% url 'accounts:order' obj.id %}">View Order</a>
+                                    </div>
+                                </div>
+                                <br>
+
+                    {% endfor %}
+                </div>
+
+                <div class="container" id="oldest" style="display: none;">
+                    {% for obj in oldest_first %}
+                                <div class="card mt-3 mx-auto shadow-lg rounded text-center"style="width: 50vw;">
+                                    <div class="card-body">
+                                        <p class="card-text" style="float: left"> <b>Order Id:</b></p><p class="card-text" style="float: right"> {{ obj.id | safe }} </p>
+                                        <br><br>
+                                        <p class="card-text" style="float: left"> <b>Name:</b></p><p class="card-text" style="float: right"> {{ obj.ordering_driver | safe }} </p>
+                                        <br><br>
+                                        <p class="card-text" style="float: left"> <b>Status:</b></p><p class="card-text" style="float: right"> {{ obj.order_status | safe }} </p>
+                                        <br><br>
+                                        <p class="card-text" style="float: left"> <b>Cost:</b></p><p class="card-text" style="float: right"> {{ obj.retail_at_order | safe }} USD ({{ obj.points_at_order | safe }} Points) </p>
+                                        <br><br>
+                                        <p class="card-text" style="float: left"> <b>Last Updated:</b></p><p class="card-text" style="float: right"> {{ obj.last_status_change | date:"F j, Y" }} </p>
+
+                                        <a class="btn btn-success" href="{% url 'accounts:order' obj.id %}">View Order</a>
+                                    </div>
+                                </div>
+                                <br>
+
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
+
+    {% endif %}
+
+
+<script>
+    var acc = document.getElementsByClassName("accordion");
+    var i;
+
+    for (i = 0; i < acc.length; i++) {
+        acc[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var panel = this.nextElementSibling;
+            if (panel.style.display === "block") {
+                panel.style.display = "none";
+            }
+            else {
+                panel.style.display = "block";
+            }
+        });
+    }
+</script>
+
+    <script>
+        $(".newest").click(function() {
+            var x = document.getElementById("newest");
+            x.style.display = "block";
+            var y = document.getElementById("oldest");
+            y.style.display = "none";
+            var z = document.getElementById("sponsor");
+            z.style.display = "none";
+
+            document.getElementById("1").classList.remove("active");
+            document.getElementById("2").classList.add("active");
+            document.getElementById("3").classList.remove("active");
+        });
+
+        $(".oldest").click(function() {
+            var x = document.getElementById("newest");
+            x.style.display = "none";
+            var y = document.getElementById("oldest");
+            y.style.display = "block";
+            var z = document.getElementById("sponsor");
+            z.style.display = "none";
+
+            document.getElementById("1").classList.remove("active");
+            document.getElementById("2").classList.remove("active");
+            document.getElementById("3").classList.add("active");
+        });
+
+        $(".sponsor").click(function() {
+            var x = document.getElementById("newest");
+            x.style.display = "none";
+            var y = document.getElementById("oldest");
+            y.style.display = "none";
+            var z = document.getElementById("sponsor");
+            z.style.display = "block";
+
+            document.getElementById("1").classList.add("active");
+            document.getElementById("2").classList.remove("active");
+            document.getElementById("3").classList.remove("active");
+        });
+    </script>
+{% endblock %}

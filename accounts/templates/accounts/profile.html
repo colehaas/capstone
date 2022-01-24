@@ -1,0 +1,135 @@
+{% extends "core/base.html" %}
+{% load static compress %}
+
+{% block css %}
+    {% compress css %}
+        <link rel="stylesheet" type="text/x-scss" href="{% static 'css/pages/profile.scss' %}" media="screen">
+        <link rel="stylesheet" type="text/x-scss" href="{% static 'css/pages/index.scss' %}" media="screen">
+    {% endcompress %}
+{% endblock %}
+
+{% block body_js %}
+{% endblock %}
+
+{% block main_content %}
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <h1>Profile</h1>
+            <div class="d-flex py-2">
+                {% if user.userinformation.role_name == 'driver' and not user.userinformation.viewing %}
+                    <a class="btn btn-lg btn-jumbotron" href="{% url 'accounts:edit_user' role=user.userinformation.role_name value=points.id %}">Edit Profile</a>
+                {% else %}
+                    <a class="btn btn-lg btn-jumbotron" href="{% url 'accounts:edit_user' role=user.userinformation.role_name value=user.userinformation.id %}">Edit Profile</a>
+                {% endif %}
+                <div class="divider"></div>
+                {% if user.userinformation.role_name == 'driver' %}
+                    <a class="btn btn-lg btn-jumbotron" href="{% url 'accounts:register' %}"><i class="fas fa-plus"></i> Apply To New Company</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="container profile-head page-section-heading">
+        <div class="row">
+            <div class="col-10">
+                <div class="profile-name">
+                    <h3> {{ user.userinformation.first_name }} {{ user.userinformation.last_name }} </h3>
+
+                    {% for app in apps %}
+                        {% if app.apply_status == 'pending' %}
+                            {{ app.sponsor_company }} {{ user.userinformation.role_name}}: {{ app.apply_status }}
+                        {% elif app.apply_status == 'accepted' %}
+                            {{ app.sponsor_company }} {{ user.userinformation.role_name}}
+                        {% endif %}
+                        <br>
+                    {% endfor %}
+                    <br>
+
+                    <h6>Last Login: {{ user.userinformation.last_login | date:"F j, Y" }}</h6><br>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br>
+    <div class="container profile-info page-section-heading">
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label>Name</label>
+                    </div>
+                    <div class="col-sm-6">
+                        <p>{{ user.userinformation.first_name }} {{ user.userinformation.last_name }}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label>Email</label>
+                    </div>
+                    <div class="col-sm-6">
+                        <p>{{ user.email }}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label>Phone</label>
+                    </div>
+                    <div class="col-sm-6">
+                        <p>{{ user.userinformation.phone_number }}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label>Address</label>
+                    </div>
+                    <div class="col-sm-6">
+                        <p> {{ user.userinformation.address }} </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label>License Number</label>
+                    </div>
+                    <div class="col-sm-6">
+                        <p> {{ user.userinformation.license_number }} </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label>State</label>
+                    </div>
+                    <div class="col-sm-6">
+                        <p> {{ user.userinformation.state }} </p>
+                    </div>
+                </div>
+
+
+    </div>
+
+    <div class="container profile-head">
+                <div class="row">
+                    <div class="col-10">
+                        {% if user.userinformation.all_companies.all.count > 1 %}
+                            <form action="{% url 'accounts:profile' %}" method="POST">
+                            {% csrf_token %}
+                                <div class="form-group">
+                                    <label for="exampleFormControlSelect1">Change Current Company</label>
+                                    <select class="form-control" name="newcompany">
+                                        <option value="" selected disabled>Please select</option>
+                                        {% for obj in user.userinformation.all_companies.all %}
+                                            <option>{{ obj }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            <input class="btn btn-success" type="submit" name="change" value="Change" />
+
+                            </form>
+
+                            {% endif %}
+                    </div>
+                </div>
+    </div>
+    
+    <a class="btn btn-link" href="{% url 'accounts:disable_account' %}">Deactivate Account</a>
+
+{% endblock %}

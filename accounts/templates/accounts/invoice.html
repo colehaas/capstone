@@ -1,0 +1,46 @@
+{% extends "core/base.html" %}
+{% load static compress mathfilters %}
+
+{% block css %}
+    {% compress css %}
+        <link rel="stylesheet" type="text/x-scss" href="{% static 'css/pages/signin.scss' %}" media="screen">
+        <link rel="stylesheet" type="text/x-scss" href="{% static 'css/pages/order_summary.scss' %}" media="screen">
+    {% endcompress %}
+{% endblock %}
+
+{% block main_content %}
+        <div class="page-section-heading my-3" style="padding-left: 50px;">
+            <h1>Invoice for {{ company.company_name }}</h1>
+            <h5>Invoice Date: {{ last | date:"F j, Y" }}</h5>
+            <h5>Number of Orders: {{ count }}</h5>
+            <h5>Total Spent: {{ dollars }} USD ({{ points }} Points)</h5>
+            <h5>Total Due: {{ due }} USD</h5>
+            <br>
+
+        </div>
+        <div class="container">
+
+        <div class="row" id="sponsor" style="display: block;">
+                    {% for obj in sales %}
+                        <div class="panel" style="">
+                                <div class="card-body">
+                                    <p class="card-text" style="float: left"> <b>Driver:</b></p><p class="card-text" style="float: right"> {{ obj.ordering_driver }} </p>
+                                    <br><br>
+                                    <p class="card-text" style="float: left"> <b>Item:</b></p><p class="card-text" style="float: right"> {{ obj.sponsor_catalog_item.catalog_item.item_name }} </p>
+                                    <br><br>
+                                    <p class="card-text" style="float: left"> <b>Status:</b></p><p class="card-text" style="float: right"> {{ obj.order_status }} </p>
+                                    <br><br>
+                                    <p class="card-text" style="float: left"> <b>Last Updated:</b></p><p class="card-text" style="float: right"> {{ obj.last_status_change | date:"F j, Y" }} </p>
+                                    <br><br>
+                                    <p class="card-text" style="float: left"> <b>Order Cost:</b></p><p class="card-text" style="float: right"> {{ obj.retail_at_order }} USD ({{ obj.points_at_order }} Points) </p>
+                                    <br><br>
+                                    <p class="card-text" style="float: left"> <b>Sponsor Fee:</b></p><p class="card-text" style="float: right"> {{ obj.retail_at_order |mul:0.01 }} USD </p>
+                                    <br><br>
+                                </div>
+                                <br>
+                        </div>
+
+                    {% endfor %}
+                </div>
+        </div>
+{% endblock %}

@@ -1,0 +1,19 @@
+// index.scss
+// This file extends _base to generate all the CSS required to render the index page
+@import "../base/base";
+@import "../components/_jumbotron.scss";
+@import "../utils/variables";
+
+/* Main Layout-Related CSS */
+#page-content {
+    min-height: calc(100vh - #{$page-header-min-height});
+    color: $page-content-text-color-dark;
+
+    // Links
+    a {
+        text-decoration: none;
+    }
+
+    // Use the jumbotron mixin to generate the necessary CSS code
+    @include generateJumbotron($page-content-text-color-light, $page-content-border-color-dark, $page-content-border-color-3);
+}

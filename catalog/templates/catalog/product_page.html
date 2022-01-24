@@ -1,0 +1,135 @@
+{% extends "core/base.html" %}
+{% load static compress %}
+
+{% block css %}
+    {% compress css %}
+        <link rel="stylesheet" type="text/x-scss" href="{% static 'css/pages/catalog.scss' %}" media="screen">
+    {% endcompress %}
+{% endblock %}
+
+{% block main_content %}
+
+{% for listing, sponsor in listings %}
+
+
+    <div class = "pt-5" >
+        <div class = "row">
+            <div class = "col-6" style = "text-align: center;">
+                <div id="myCarousel" class="carousel slide" data-ride="carousel">
+<!--                     <ol class="carousel-indicators">
+                        {% for image in images %}
+                                {% if forloop.first %}
+                                    <li data-target="#myCarousel" data-slide-to= "{{ forloop.counter0 }}" class="active">
+                                        <img class="m-2 mx-auto img-thumbnail" src="{{ image.image_link }}" width="auto" height="auto" />
+                                    </li>
+                                {% else %}
+                                    <li data-target="#myCarousel" data-slide-to= "{{ forloop.counter0 }}" >
+                                        <img class="m-2 mx-auto img-thumbnail" src="{{ image.image_link }}" width="auto" height="auto" />
+                                    </li>
+                                {% endif %}
+                        {% endfor %}
+                    </ol> -->
+                    <div class="carousel-inner">
+                        
+                        {% for image in images %}
+                            {% if forloop.first %}
+                                <div class="carousel-item active">
+                            {% else %}
+                                <div class="carousel-item">
+                            {% endif %}
+                                <img class="m-2 mx-auto img-thumbnail" src="{{ image.big_image_link }}" width="auto" height="auto" />
+                                </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <a class="fa fa-arrow-circle-left fa-2x" href="#myCarousel" role="button" data-slide="prev"></a>
+                <a class="fa fa-arrow-circle-right fa-2x" href="#myCarousel" role="button" data-slide="next"></a>
+            </div>
+            <div class = "col-6 ">
+                <div style = "text-align: center;">
+                    <h4 >{{ listing.item_name|safe }}</h4>
+                    <p>price: {{ sponsor.point_value }} points</p>
+                    
+                    <!-- add to cart button and modal -->
+                    <div class="d-flex py-2">
+                        <button type="button" class="btn btn-lg btn-jumbotron mx-auto " data-toggle="modal" data-target=".bd-example-modal-sm">Add to cart</button>
+
+                        {% if points > sponsor.point_value %}
+                            <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-sm">
+                                    <div class="modal-content p-3">
+                                        {% for image in images %}
+                                            {% if forloop.first %}
+                                                <img class="m-2 mx-auto img-thumbnail" src="{{ image.image_link }}" width="auto" height="400px"/>
+                                            {% endif %}
+                                        {% endfor %}
+                                        <h5 class="font-weight-bold">{{ listing.item_name }} </h5> 
+                                        <p> price: {{ sponsor.point_value }} points </p>
+                                        <a class="btn btn-lg btn-jumbotron mx-auto"  href="{% url 'catalog:add_item_to_cart' listing.api_item_Id %}">Confirm</a>
+
+                                    </div>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-sm">
+                                    <div class="modal-content p-3" style = "text-align: center;">
+                                        <h5 class="font-weight-bold"> Sorry! </h5> 
+                                        <p> You do not have enough points to purchase this product </p>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class = "pt-3">
+                <h5> Description: </h5>
+                <p> {{ listing.item_description|safe }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if fave is None%}
+    <div style = "text-align: center; padding-top: 20px;"><a class="fa fa-heart-o" href="{% url 'catalog:favorite_item' listing.api_item_Id %}">Add to Favorites</a></div>
+{% else %}
+    <div style = "text-align: center; padding-top: 20px;"><a class="fa fa-heart-o" href="{% url 'catalog:favorite_item' listing.api_item_Id %}">Remove from Favorites</a></div>
+{% endif %}
+ 
+<!-- Display past reviews -->
+    <br><br>
+    <h5 style = "text-align: center;" id="reviews">Item Reviews</h5>
+    <hr>
+    {% for review in reviewlist %}
+        {% if review.is_approved %}
+        <p id="reviews">{{ review.reviewer.first_name }} {{ review.reviewer.last_name }}<br>
+        {{ review.title }}<br> {{ review.reviewer.first_name }}'s thoughts: <br>
+        {{ review.review }}</p>
+        {% endif %}
+    {% endfor %}
+
+
+
+    <!-- Product Reviews Section -->
+    <!-- If user has not wrote review already, display -->
+    {% if form %}
+        <h5 style = "text-align: center;" id="reviews">Leave a review!</h5>
+        <form action="{% url 'catalog:product_page' listing.api_item_Id %}" method="post">
+        {% csrf_token %}
+        <p style="text-align: center;">
+        Title<br/>
+        {{ form.title }}<br/><br/>
+        Review<br/>
+        {{ form.review }}<br/>
+        <input type="submit" value="Submit"/></p>
+        </form>
+    {% else %}
+    <h5 style = "text-align: center;" id="reviews">You've reviewed this item already!</h5> 
+    {% endif %}
+
+{% endfor %}
+
+
+
+{% endblock %}

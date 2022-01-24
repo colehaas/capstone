@@ -1,0 +1,41 @@
+body{
+    background: #c9dae9;
+}
+
+.container{
+    padding: 2%;
+    margin-top: 1%;
+    margin-bottom: 1%;
+    border-radius: 0.5rem;
+    background: #fff;
+}
+
+.profile-title{
+    margin-top: 3%;
+    text-align: center;
+    font-weight: 600;
+    color: #202022;
+}
+.profile-edit-btn{
+    border: none;
+    border-radius: 1.5rem;
+    width: 70%;
+    padding: 2%;
+    font-weight: 600;
+    color: #6c757d;
+    cursor: pointer;
+}
+
+.profile-name {
+    font-weight: 600;
+    color: #2f2f30;
+}
+
+.profile-info p{
+    font-weight: 600;
+    color: #0062cc;
+}
+
+.profile-info .row label{
+    font-weight: 600;
+}

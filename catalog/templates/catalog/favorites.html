@@ -1,0 +1,37 @@
+{% extends "core/base.html" %}
+{% load static compress %}
+
+{% block css %}
+    {% compress css %}
+        <link rel="stylesheet" type="text/x-scss" href="{% static 'css/pages/order_summary.scss' %}" media="screen">
+    {% endcompress %}
+{% endblock %}
+
+{% block main_content %}
+
+{% if item_list %}
+<ul><h1 style="text-align: center;">Favorite Items</h1></ul>
+<table class="order_table">
+        <tr>
+        <!-- <th id="rows">No.</th> -->
+        <th id="rows">Item</th>
+        <th id="rows">Name</th>
+        <th id="rows">Cost</th>
+
+        </tr>
+    {% for items, images in item_list %}
+        <tr style="padding-top: 5px;">
+        <!-- <th id="rows">{{ forloop.counter }}</th> -->
+        <td><img id="itemPic" src="{{ images.image_link }}" width="auto" height="auto"/></td>
+        <td id = "rows"> <a href="{% url 'catalog:product_page' items.api_item_Id %}">{{ items.item_name }}</a></td>
+        <td id = "rows"> <a> $ {{ items.retail_price }}</a></td>
+
+        <br>    
+        </tr>
+    {% endfor %}
+</table>
+
+{% else %}
+        <h1 style="text-align: center; padding-top: 10px;"> No Favorite Items Yet !</h1>
+{% endif %}
+    {% endblock %} 

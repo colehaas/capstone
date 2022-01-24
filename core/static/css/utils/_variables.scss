@@ -1,0 +1,72 @@
+// _variables.scss
+// In this file we define all the variables that we plan to use in our other SCSS/SASS files
+
+// Google Fonts
+@import url("https://fonts.googleapis.com/css?family=Oswald");
+@import url("https://fonts.googleapis.com/css?family=Roboto");
+
+/** This section defines the various fonts and colors */
+
+// Colors used by the application
+// Note 1: Used the names from https://coolors.co/
+// Note 2: This doesn't include the ones used by Bootstrap
+$gunmetal: #343a40 !important;
+$light-grey: #d7d9d7 !important;
+$lavender: #c9c5cb !important;
+$light-purple: #baacbd !important;
+$purple: #b48eae !important;
+$white: #fff !important;
+
+// Fonts
+$font-family-1: roboto, helvetica, arial, sans-serif;
+$font-family-2: oswald, helvetica, arial, sans-serif;
+$font-family-3: "Courier New", courier, monospace;
+
+/**
+ *  This section contains the various SCSS variables we are going to use.
+ *  Note that this section will use the font and color variables we have defined
+ *  in the previous section.
+ */
+
+// Body
+$body-font: $font-family-1;
+
+// Page-Header
+$page-header-min-height: 100px;
+$page-header-bg-color: $gunmetal;
+
+$page-header-navbrand-color: $white;
+$page-header-navlink-color: $light-purple;
+$page-header-navlink-hover-color: $purple;
+
+$page-header-dropdownlink-color: $purple;
+$page-header-dropdownlink-hover-color: $white;
+$page-header-dropdownlink-bg-color: $gunmetal;
+
+$page-header-site-title-font: $font-family-2;
+
+// Page-Content
+$page-content-text-color-dark: $purple;
+$page-content-text-color-light: $white;
+
+$page-content-navlink-color: $purple;
+$page-content-navlink-hover-color: $light-purple;
+
+$page-content-bg-color-1: $lavender;
+$page-content-bg-color-2: $light-purple;
+$page-content-bg-color-3: $gunmetal;
+$page-content-bg-color-dark: $purple;
+$page-content-bg-color-light: $white;
+
+$page-content-border-color-1: $lavender;
+$page-content-border-color-2: $light-purple;
+$page-content-border-color-3: $gunmetal;
+$page-content-border-color-dark: $purple;
+$page-content-border-color-light: $white;
+
+// Page-Footer
+$page-footer-color: $white;
+$page-footer-bg-color: $light-grey;
+
+$page-footer-navlink-color: $light-purple;
+$page-footer-navlink-hover-color: $purple;

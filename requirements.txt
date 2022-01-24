@@ -1,0 +1,10 @@
+Django==3.1.2
+django-compressor==2.4
+django-libsass==0.8
+social-auth-app-django==4.0.0
+django-crispy-forms==1.9.2
+django_ace==1.0.8
+djangorestframework==3.12.2
+django-apscheduler==0.5.2
+django-filter==2.4.0
+django-mathfilters==1.0.0

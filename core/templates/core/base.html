@@ -1,0 +1,110 @@
+<!-- This is where we put everything that we want each page to have -->
+{% load static compress %}
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <!-- Meta -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>Driverite</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    {% block css %}
+        <link rel="stylesheet" type="text/x-scss" href="{% static 'css/pages/index.scss' %}" media="screen">
+    {% endblock %}
+
+    <!-- JavaScript -->
+    <script src="https://kit.fontawesome.com/d50a2fb57f.js"></script>
+    
+    {% block head_js %}
+    {% endblock %}
+</head>
+
+<body>
+<!-- JavaScript Libraries -->
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+{% block body_js %}
+{% endblock %}
+
+<!-- Page Header -->
+
+<!-- Navigation Bar -->
+
+{% block body %}
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+    <!-- Brand -->
+    <a class="navbar-brand" href="{% url 'index' %}">
+        <img src='https://i.imgur.com/Sw9lIoa.png'>
+    </a>
+
+    {% if user.is_authenticated %}
+        {% if user.userinformation.role_name == "driver" %}
+            {% include "core/driver_navbar.html" %}
+        {% elif user.userinformation.role_name == "sponsor" %}
+            {% include "core/sponsor_navbar.html" %}
+        {% elif user.userinformation.role_name == "admin" %}
+            {% include "core/admin_navbar.html" %}
+        {% endif %}
+    {% endif %}
+</nav>
+
+{% endblock body %}  
+
+<!-- Main Content Block -->
+    <main id="page-content" class="flex-shrink-0" role="main">
+        {% block main_content %}
+
+        {% endblock %}
+        {% if user.userinformation.role_name == "sponsor" and not user.userinformation.viewing %}
+            <form action="{% url 'accounts:swap_type' %}" method="POST">
+                {% csrf_token %}
+                <div class="container">
+                    <input id="top" type="submit" name="swapToDriver" value="View as Driver" title="Swap View"></input>
+                </div>
+            </form>
+        {% elif user.userinformation.role_name == "driver" and user.userinformation.viewing and user.userinformation.type_to_revert_to == "sponsor" %}
+            <form action="{% url 'accounts:swap_type' %}" method="POST">
+                {% csrf_token %}
+                <div class="container">
+                    <input id="top" type="submit" name="swapBack" value="View as Yourself" title="Swap View"></input>
+                </div>
+            </form>
+        {% endif %}
+
+
+        {% if user.userinformation.role_name == "sponsor" and user.userinformation.viewing and user.userinformation.is_admin %}
+            <form action="{% url 'accounts:swap_type' %}" method="POST">
+                {% csrf_token %}
+                <div class="container">
+                    <input id="top" type="submit" name="swapBack" value="View as Yourself" title="Swap View"></input>
+                    <input id="second" type="submit" name="swapToDriver" value="View as Driver" title="Swap View"></input>
+                </div>
+            </form>
+        {% elif user.userinformation.role_name == "driver" and user.userinformation.viewing and user.userinformation.type_to_revert_to == "admin" %}
+            <form action="{% url 'accounts:swap_type' %}" method="POST">
+                {% csrf_token %}
+                <div class="container">
+                    <input id="top" type="submit" name="swapBack" value="View as Yourself" title="Swap View"></input>
+                </div>
+            </form>
+        {% endif %}
+    </main>
+</body>
+
+</html>

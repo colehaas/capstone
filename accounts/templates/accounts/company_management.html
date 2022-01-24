@@ -1,0 +1,86 @@
+{% extends "core/base.html" %}
+{% load static compress crispy_forms_tags crispy_forms_filters %}
+
+{% block css %}
+    {% compress css %}
+        <link rel="stylesheet" type="text/x-scss" href="{% static 'css/pages/disable_account.scss' %}" media="screen">
+    {% endcompress %}
+{% endblock %}
+
+{% block main_content %}
+    <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.24/b-1.7.0/b-colvis-1.7.0/b-html5-1.7.0/b-print-1.7.0/cr-1.5.3/date-1.0.2/sc-2.0.3/sl-1.3.2/datatables.min.css"/>
+    
+    {% if current_user.role_name == 'admin'%}
+        <br>
+        <h3 class='text-center mb-3'>  All Sponsor Companies </h3>
+        <div class="container">
+            <a class="btn btn-success" href="{% url 'accounts:edit_company' value=0%}">+ Add New Company</a>
+            <div class="card mt-3 mx-auto shadow-lg rounded text-center">
+                <table id="adminCompanyTable" class="table table-striped table-bordered table-hover">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Edit Company</th>
+                            <th>View as Sponsor</th>
+                            <th>Name</th>
+                            <th>Phone Number</th>
+                            <th>Address</th>
+                            <th>US Cent To Point Ratio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {%for company in companies%}
+                        <tr>
+                            <td><a class="btn btn-primary" href="{% url 'accounts:edit_company' value=company.id%}">Edit</a></td>
+                            <td>
+                                <form action="{% url 'accounts:swap_type' %}" method="POST">
+                                    {% csrf_token %}
+                                    <div class="container">
+                                        <input type="hidden" name="sponsor" value="{{ company.company_name }}"/>
+                                        <input class="btn btn-primary" type="submit" name="swapToSponsor" value="View" title="Swap View"></input>
+                                    </div>
+                                </form>
+                            </td>
+                            <td>{{company.company_name | safe}}</td>
+                            <td>{{company.company_phone_number | safe}}</td>
+                            <td>{{company.company_street_address | safe}}, {{company.company_city}}, {{company.company_state}} {{company.company_zipcode}}</td>
+                            <td>{{company.company_point_ratio | safe}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <br>
+        </div>
+    {% endif %}
+
+    {% if current_user.role_name == 'sponsor'%}
+        <div class="jumbotron jumbotron-fluid py-5 mb-0">
+            <div class="container text-center">
+                <h1> About {{ companies.company_name }} </h1>
+            </div>
+        </div>
+        <div class="container px-3 py-0">
+            <form action="{% url 'accounts:sponsor_about_page_S' %}" method="POST">
+                {% csrf_token %}
+                <div class="page-section-heading my-3">
+                    <h3>About</h3>
+                </div>
+                <div class="my-4">
+                    
+                    <form action="/action_page.php">
+                        <textarea rows="2" cols="136" placeholder= {{user.userinformation.sponsor_company.company_about_info}}></textarea><br>
+                    </form>
+
+
+                </div>
+                <div class="d-flex p-0 justify-content-center">
+                    <button type="submit" class="btn btn-success" aria-expanded="true">Confirm</button>
+                    <a href="{% url 'accounts:profile' %}" class="btn btn-danger ml-2" role="button" aria-pressed="true">Cancel</a>
+                </div>
+            </form>
+            <br>
+        </div>
+    {% endif %}
+{% endblock %}
